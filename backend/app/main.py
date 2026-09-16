@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.research import router as research_router
+
 app = FastAPI(
     title="Multi-Agent Research Assistant API",
     description="Backend API for the Multi-Agent Research Assistant",
@@ -15,6 +17,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(research_router)
 
 
 @app.get("/health")
