@@ -52,21 +52,20 @@ class ResearchState(TypedDict):
 
 
 class ResearchRequest(BaseModel):
-    question: str = Field(..., min_length=3, description="The research question to analyze.")
+    """
+    Request model for triggering a research task.
+    """
+    question: str = Field(..., min_length=3, description="The research question or topic.")
 
 
-class ResearchReport(BaseModel):
-    id: str
+class ResearchResponse(BaseModel):
+    """
+    Response model containing all results of the research pipeline.
+    """
     question: str
-    created_at: str
-    status: str = "completed"
     search_queries: List[str] = []
     search_results: List[SearchResult] = []
     retrieved_documents: List[RetrievedDocument] = []
     findings: List[ResearchFinding] = []
     final_answer: str
-    executive_summary: Optional[str] = None
-    key_takeaways: List[str] = []
-    recommendations: Optional[str] = None
-    limitations: Optional[str] = None
 

@@ -9,9 +9,13 @@ from app.core.config import settings
 T = TypeVar("T", bound=BaseModel)
 
 # We use the AsyncGroq client as requested
-client = AsyncGroq(
-    api_key=settings.LLM_API_KEY or "dummy_key_to_allow_import"
-)
+if not settings.LLM_API_KEY:
+    raise ValueError(
+        "LLM_API_KEY is not set. Please add it to your .env file. "
+        "Get a key from https://console.groq.com/keys"
+    )
+
+client = AsyncGroq(api_key=settings.LLM_API_KEY)
 
 
 class TokenUsage(BaseModel):
@@ -158,7 +162,9 @@ async def generate_structured(
             if attempt < max_retries:
                 continue
     
-    raise last_error
+    if last_error is not None:
+        raise last_error
+    raise RuntimeError("Structured generation failed after maximum retries.")
 
 
 def _build_json_example(schema: dict) -> dict:

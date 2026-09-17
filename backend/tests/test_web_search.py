@@ -10,7 +10,7 @@ from app.tools.web_search import search_web
 @respx.mock
 async def test_search_web_success():
     # Ensure API key is set for testing
-    settings.SEARCH_API_KEY = "dummy_key"
+    settings.SEARCH_API_KEY = "tvly-dummy_key"
     
     mock_response = {
         "results": [
@@ -42,7 +42,8 @@ async def test_search_web_success():
 @pytest.mark.asyncio
 @respx.mock
 async def test_search_web_error():
-    settings.SEARCH_API_KEY = "dummy_key"
+    settings.SEARCH_API_KEY = "tvly-dummy_key"
+
     
     respx.post("https://api.tavily.com/search").mock(
         return_value=httpx.Response(500)

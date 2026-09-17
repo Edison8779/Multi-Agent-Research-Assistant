@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.research import router as research_router
+from app.api.v1.router import api_router
 
 app = FastAPI(
     title="Multi-Agent Research Assistant API",
@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(research_router)
+app.include_router(api_router, prefix="/api/v1")
 
 
 @app.get("/health")
@@ -27,6 +27,7 @@ async def health_check() -> dict[str, str]:
     Health check endpoint.
     """
     return {"status": "ok", "message": "Backend is running"}
+
 
 
 if __name__ == "__main__":
